@@ -103,20 +103,7 @@ class App extends Component {
 			});
 	}
 
-	deleteUser(event) {
-		console.log('deleteUser')
-		axios
-			.delete('http://localhost:5000/users/', event.target)
-			.then(res => {
-				console.log("Server Response :", res);
-				this.setState({
-					users: res.data.users,
-				});
-			})
-			.catch(err => {
-				console.log("Server Error: ", err);
-			});
-	}
+
 
 	render() {
 		return (

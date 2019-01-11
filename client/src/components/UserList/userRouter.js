@@ -11,59 +11,59 @@ function uppercaseName(req, res, next) {
 	next();
 }
 
-
-router.get("/", (req, res) => {
-	userDb
-		.get()
-		.then(users => {
-			res.status(200).json({ users });
-		})
-		.catch(res.status(500));
-});
-
-router.get("/:id", (req, res) => {
-	const id = req.params.id;
-	userDb
-		.getUserPosts(id)
-		.then(userPosts => {
-			res.status(201).json({ userPosts });
-		})
-		.catch(res.status(500));
-});
-
-router.post("/", uppercaseName, (req, res) => {
-	let newUser = req.body;
-	if (newUser.name) {
+router
+	.route("/")
+	.get((req, res) => {
 		userDb
-			.insert(newUser)
-			.then(user => {
-				res.status(201).json({ user });
+			.get()
+			.then(users => {
+				res.status(200).json({ users });
 			})
 			.catch(res.status(500));
-	} else {
-		res.status(400).json({ errorMessage: "Please provide a name" });
-	}
-});
+	})
+	.post(uppercaseName, (req, res) => {
+		let newUser = req.body;
+		if (newUser.name) {
+			userDb
+				.insert(newUser)
+				.then(user => {
+					res.status(201).json({ user });
+				})
+				.catch(res.status(500));
+		} else {
+			res.status(400).json({ errorMessage: "Please provide a name" });
+		}
+	});
 
-router.put("/:id", uppercaseName, (req, res) => {
-	const id = req.params.id;
-	const changes = req.body;
-	userDb
-		.update(id, changes)
-		.then(count => {
-			res.status(201).json({ count });
-		})
-		.catch(res.status(500));
-});
-
-router.delete("/:id", (req, res) => {
-	const id = req.params.id;
-	userDb
-		.remove(id)
-		.then(count => {
-			res.status(200).json({ count });
-		})
-		.catch(res.status(500));
-});
+router
+	.route("/:id")
+	.get((req, res) => {
+		const id = req.params.id;
+		userDb
+			.getUserPosts(id)
+			.then(userPosts => {
+				res.status(201).json({ userPosts });
+			})
+			.catch(res.status(500));
+	})
+	.put(uppercaseName, (req, res) => {
+		const id = req.params.id;
+		const changes = req.body;
+		userDb
+			.update(id, changes)
+			.then(count => {
+				res.status(201).json({ count });
+			})
+			.catch(res.status(500));
+	})
+	.delete((req, res) => {
+		const id = req.params.id;
+		userDb
+			.remove(id)
+			.then(count => {
+				res.status(200).json({ count });
+			})
+			.catch(res.status(500));
+	});
 
 module.exports = router;
