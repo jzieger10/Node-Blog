@@ -1,19 +1,39 @@
 import React from "react";
-import axios from "axios";
+import styled from 'styled-components';
+
+const PostListContainer = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+`
+
+const PostContainer = styled.div`
+	border: 2px solid darkgray;
+	border-radius: 5px;
+	width: 30%;
+	margin: 20px;
+	background: #fff;
+`
+
+const DeleteButton = styled.button`
+
+`
 
 const PostList = props => {
 	return (
-		<div>
+		<PostListContainer>
 			{props.posts.map(post => (
-				<div className="post-container" key={post.id}>
+				<PostContainer key={post.id}>
 					<br />
 					<h3>Post #{post.id}</h3>
 
 					<p>{post.text}</p>
 					<br />
-				</div>
+
+					<DeleteButton onClick={props.deletePost}>Delete</DeleteButton>
+				</PostContainer>
+				
 			))}
-		</div>
+		</PostListContainer>
 	);
 };
 
